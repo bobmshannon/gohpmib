@@ -78,6 +78,67 @@ const (
 	cpqDaLogDrvOsName      OID = "1.3.6.1.4.1.232.3.2.3.1.1.14"
 )
 
+var (
+	faultToleranceIDMappings = map[string]FaultTolerance{
+		"1":  FaultToleranceOther,
+		"2":  FaultToleranceNone,
+		"3":  FaultToleranceMirroring,
+		"4":  FaultToleranceDataGuard,
+		"5":  FaultToleranceDistributedDataGuard,
+		"7":  FaultToleranceAdvancedDataGuard,
+		"8":  FaultToleranceRAID50,
+		"9":  FaultToleranceRAID10,
+		"10": FaultToleranceRAID1ADM,
+		"11": FaultToleranceRAID10ADM,
+	}
+	faultToleranceHumanMappings = map[FaultTolerance]string{
+		FaultToleranceOther:                "Other",
+		FaultToleranceNone:                 "None",
+		FaultToleranceMirroring:            "Mirroring",
+		FaultToleranceDataGuard:            "Data Guard",
+		FaultToleranceDistributedDataGuard: "Distributed Data Guard",
+		FaultToleranceAdvancedDataGuard:    "Advanced Data Guard",
+		FaultToleranceRAID50:               "RAID-50",
+		FaultToleranceRAID10:               "RAID-10",
+		FaultToleranceRAID1ADM:             "RAID-1 ADM",
+		FaultToleranceRAID10ADM:            "RAID-10 ADM",
+	}
+	logicalDriveStatusIDMappings = map[string]LogicalDriveStatus{
+		"2":  LogicalDriveStatusOK,
+		"3":  LogicalDriveStatusFailed,
+		"4":  LogicalDriveStatusUnconfigured,
+		"5":  LogicalDriveStatusRecovering,
+		"6":  LogicalDriveStatusReadyForRebuild,
+		"7":  LogicalDriveStatusRebuilding,
+		"8":  LogicalDriveStatusWrongDrive,
+		"9":  LogicalDriveStatusBadConnect,
+		"10": LogicalDriveStatusOverheating,
+		"11": LogicalDriveStatusShutdown,
+		"12": LogicalDriveStatusExpanding,
+		"13": LogicalDriveStatusNotAvailable,
+		"14": LogicalDriveStatusQueuedForExpansion,
+		"15": LogicalDriveStatusMultipathAccessDegraded,
+		"16": LogicalDriveStatusErasing,
+	}
+	logicalDriveStatusHumanMappings = map[LogicalDriveStatus]string{
+		LogicalDriveStatusOK:                      "OK",
+		LogicalDriveStatusFailed:                  "Failed",
+		LogicalDriveStatusUnconfigured:            "Unconfigured",
+		LogicalDriveStatusRecovering:              "Recovering",
+		LogicalDriveStatusReadyForRebuild:         "Ready For Rebuild",
+		LogicalDriveStatusRebuilding:              "Rebuilding",
+		LogicalDriveStatusWrongDrive:              "Wrong Drive",
+		LogicalDriveStatusBadConnect:              "Bad Connect",
+		LogicalDriveStatusOverheating:             "Overheating",
+		LogicalDriveStatusShutdown:                "Shutdown",
+		LogicalDriveStatusExpanding:               "Expanding",
+		LogicalDriveStatusNotAvailable:            "Not Available",
+		LogicalDriveStatusQueuedForExpansion:      "Queued For Expansion",
+		LogicalDriveStatusMultipathAccessDegraded: "Multipath Access Degraded",
+		LogicalDriveStatusErasing:                 "Erasing",
+	}
+)
+
 // LogicalDrives returns a list of Logical Drives. Returns a non-nil error if the list of Logical
 // Drives could not be determined.
 func (m *MIB) LogicalDrives() ([]LogicalDrive, error) {
@@ -134,58 +195,20 @@ func (m *MIB) LogicalDrives() ([]LogicalDrive, error) {
 // parseFaultTolerance returns the FaultTolerance that corresponds with the given string ID.
 // Returns FaultToleranceUnknown if the given string ID cannot be not accounted for.
 func parseFaultTolerance(s string) FaultTolerance {
-	switch s {
-	case "1":
-		return FaultToleranceOther
-	case "2":
-		return FaultToleranceNone
-	case "3":
-		return FaultToleranceMirroring
-	case "4":
-		return FaultToleranceDataGuard
-	case "5":
-		return FaultToleranceDistributedDataGuard
-	case "7":
-		return FaultToleranceAdvancedDataGuard
-	case "8":
-		return FaultToleranceRAID50
-	case "9":
-		return FaultToleranceRAID10
-	case "10":
-		return FaultToleranceRAID1ADM
-	case "11":
-		return FaultToleranceRAID10ADM
-	default:
+	tolerance, ok := faultToleranceIDMappings[s]
+	if !ok {
 		return FaultToleranceUnknown
 	}
+	return tolerance
 }
 
 // String converts the FaultTolerance to a human readable string.
 func (f *FaultTolerance) String() string {
-	switch *f {
-	case FaultToleranceOther:
-		return "Other"
-	case FaultToleranceNone:
-		return "None"
-	case FaultToleranceMirroring:
-		return "Mirroring"
-	case FaultToleranceDataGuard:
-		return "Data Guard"
-	case FaultToleranceDistributedDataGuard:
-		return "Distributed Data Guard"
-	case FaultToleranceAdvancedDataGuard:
-		return "Advanced Data Guard"
-	case FaultToleranceRAID50:
-		return "RAID-50"
-	case FaultToleranceRAID10:
-		return "RAID-10"
-	case FaultToleranceRAID1ADM:
-		return "RAID-1 ADM"
-	case FaultToleranceRAID10ADM:
-		return "RAID-10 ADM"
-	default:
+	s, ok := faultToleranceHumanMappings[*f]
+	if !ok {
 		return "Unknown"
 	}
+	return s
 }
 
 // parseAvailableSpares returns the list of spares from the given space delimited string.
@@ -201,76 +224,18 @@ func parseAvailableSpares(s string) []string {
 // parseFaultTolerance returns the LogicalDriveStatus that corresponds with the given string.
 // Returns LogicalDriveStatusUnknown if the given string ID cannot be not accounted for.
 func parseLogicalDriveStatus(s string) LogicalDriveStatus {
-	switch s {
-	case "2":
-		return LogicalDriveStatusOK
-	case "3":
-		return LogicalDriveStatusFailed
-	case "4":
-		return LogicalDriveStatusUnconfigured
-	case "5":
-		return LogicalDriveStatusRecovering
-	case "6":
-		return LogicalDriveStatusReadyForRebuild
-	case "7":
-		return LogicalDriveStatusRebuilding
-	case "8":
-		return LogicalDriveStatusWrongDrive
-	case "9":
-		return LogicalDriveStatusBadConnect
-	case "10":
-		return LogicalDriveStatusOverheating
-	case "11":
-		return LogicalDriveStatusShutdown
-	case "12":
-		return LogicalDriveStatusExpanding
-	case "13":
-		return LogicalDriveStatusNotAvailable
-	case "14":
-		return LogicalDriveStatusQueuedForExpansion
-	case "15":
-		return LogicalDriveStatusMultipathAccessDegraded
-	case "16":
-		return LogicalDriveStatusErasing
-	default:
+	status, ok := logicalDriveStatusIDMappings[s]
+	if !ok {
 		return LogicalDriveStatusUnknown
 	}
+	return status
 }
 
 // String converts the LogicalDriveStatus to a human readable string.
 func (l *LogicalDriveStatus) String() string {
-	switch *l {
-	case LogicalDriveStatusOK:
-		return "OK"
-	case LogicalDriveStatusFailed:
-		return "Failed"
-	case LogicalDriveStatusUnconfigured:
-		return "Unconfigured"
-	case LogicalDriveStatusRecovering:
-		return "Recovering"
-	case LogicalDriveStatusReadyForRebuild:
-		return "Ready For Rebuild"
-	case LogicalDriveStatusRebuilding:
-		return "Rebuilding"
-	case LogicalDriveStatusWrongDrive:
-		return "Wrong Drive"
-	case LogicalDriveStatusBadConnect:
-		return "Bad Connect"
-	case LogicalDriveStatusOverheating:
-		return "Overheating"
-	case LogicalDriveStatusShutdown:
-		return "Shutdown"
-	case LogicalDriveStatusExpanding:
-		return "Expanding"
-	case LogicalDriveStatusNotAvailable:
-		return "Not Available"
-	case LogicalDriveStatusQueuedForExpansion:
-		return "Queued For Expansion"
-	case LogicalDriveStatusMultipathAccessDegraded:
-		return "Multipath Access Degraded"
-	case LogicalDriveStatusErasing:
-		return "Erasing"
-	default:
+	s, ok := logicalDriveStatusHumanMappings[*l]
+	if !ok {
 		return "Unknown"
 	}
+	return s
 }
