@@ -1,8 +1,6 @@
 package hpmib
 
-import (
-	"strconv"
-)
+import "strconv"
 
 // FanStatus describes the state of a fan.
 type FanStatus int
@@ -59,6 +57,59 @@ const (
 	FanLocaleVirtual         FanLocale = 18
 )
 
+var (
+	fanLocaleIDMappings = map[string]FanLocale{
+		"1":  FanLocaleOther,
+		"2":  FanLocaleUnknown,
+		"3":  FanLocaleSystem,
+		"4":  FanLocaleSystemBoard,
+		"5":  FanLocaleIOBoard,
+		"6":  FanLocaleCPU,
+		"7":  FanLocaleMemory,
+		"8":  FanLocaleStorage,
+		"9":  FanLocaleRemovableMedia,
+		"10": FanLocalePowerSupply,
+		"11": FanLocaleAmbient,
+		"12": FanLocaleChassis,
+		"13": FanLocaleBridgeCard,
+		"14": FanLocaleManagementBoard,
+		"15": FanLocaleBackplane,
+		"16": FanLocaleNetworkSlot,
+		"17": FanLocaleBladeSlot,
+		"18": FanLocaleVirtual,
+	}
+	fanLocaleHumanMappings = map[FanLocale]string{
+		FanLocaleOther:           "Other",
+		FanLocaleUnknown:         "Unknown",
+		FanLocaleSystem:          "System",
+		FanLocaleSystemBoard:     "System Board",
+		FanLocaleIOBoard:         "IO Board",
+		FanLocaleCPU:             "CPU",
+		FanLocaleMemory:          "Memory",
+		FanLocaleStorage:         "Storage",
+		FanLocaleRemovableMedia:  "Removable Media",
+		FanLocalePowerSupply:     "Power Supply",
+		FanLocaleAmbient:         "Ambient",
+		FanLocaleChassis:         "Chassis",
+		FanLocaleBridgeCard:      "Bridge Card",
+		FanLocaleManagementBoard: "Management Board",
+		FanLocaleBackplane:       "Backplane",
+		FanLocaleNetworkSlot:     "Network Slot",
+		FanLocaleBladeSlot:       "Blade Slot",
+		FanLocaleVirtual:         "Virtual",
+	}
+	fanRedundancyIDMappings = map[string]FanRedundancy{
+		"1": FanRedundancyOther,
+		"2": FanRedundancyNotRedundant,
+		"3": FanRedundancyRedundant,
+	}
+	fanRedundancyHumanMappings = map[FanRedundancy]string{
+		FanRedundancyOther:        "Other",
+		FanRedundancyNotRedundant: "Not Redundant",
+		FanRedundancyRedundant:    "Redundant",
+	}
+)
+
 // Fans returns a list of Fans. Returns a non-nil error of the list of Fans
 // could not be determined.
 func (m *MIB) Fans() ([]Fan, error) {
@@ -96,111 +147,35 @@ func (m *MIB) Fans() ([]Fan, error) {
 }
 
 func parseFanLocale(s string) FanLocale {
-	switch s {
-	case "1":
-		return FanLocaleOther
-	case "3":
-		return FanLocaleSystem
-	case "4":
-		return FanLocaleSystemBoard
-	case "5":
-		return FanLocaleIOBoard
-	case "6":
-		return FanLocaleCPU
-	case "7":
-		return FanLocaleMemory
-	case "8":
-		return FanLocaleStorage
-	case "9":
-		return FanLocaleRemovableMedia
-	case "10":
-		return FanLocalePowerSupply
-	case "11":
-		return FanLocaleAmbient
-	case "12":
-		return FanLocaleChassis
-	case "13":
-		return FanLocaleBridgeCard
-	case "14":
-		return FanLocaleManagementBoard
-	case "15":
-		return FanLocaleBackplane
-	case "16":
-		return FanLocaleNetworkSlot
-	case "17":
-		return FanLocaleBladeSlot
-	case "18":
-		return FanLocaleVirtual
-	default:
+	locale, ok := fanLocaleIDMappings[s]
+	if !ok {
 		return FanLocaleUnknown
 	}
+	return locale
 }
 
 // String converts the FanLocale to a human readable string.
 func (f *FanLocale) String() string {
-	switch *f {
-	case FanLocaleOther:
-		return "Other"
-	case FanLocaleSystem:
-		return "System"
-	case FanLocaleSystemBoard:
-		return "System Board"
-	case FanLocaleIOBoard:
-		return "IO Board"
-	case FanLocaleCPU:
-		return "CPU"
-	case FanLocaleMemory:
-		return "Memory"
-	case FanLocaleStorage:
-		return "Storage"
-	case FanLocaleRemovableMedia:
-		return "Removable Media"
-	case FanLocalePowerSupply:
-		return "Power Supply"
-	case FanLocaleAmbient:
-		return "Ambient"
-	case FanLocaleChassis:
-		return "Chassis"
-	case FanLocaleBridgeCard:
-		return "Bridge Card"
-	case FanLocaleManagementBoard:
-		return "Management Board"
-	case FanLocaleBackplane:
-		return "Backplane"
-	case FanLocaleNetworkSlot:
-		return "Network Slot"
-	case FanLocaleBladeSlot:
-		return "Blade Slot"
-	case FanLocaleVirtual:
-		return "Virtual"
-	default:
+	s, ok := fanLocaleHumanMappings[*f]
+	if !ok {
 		return "Unknown"
 	}
+	return s
 }
 
 func parseFanRedundancy(s string) FanRedundancy {
-	switch s {
-	case "1":
-		return FanRedundancyOther
-	case "2":
-		return FanRedundancyNotRedundant
-	case "3":
-		return FanRedundancyRedundant
-	default:
+	redundancy, ok := fanRedundancyIDMappings[s]
+	if !ok {
 		return FanRedundancyUnknown
 	}
+	return redundancy
 }
 
 // String converts the FanRedundancy to a human readable string.
 func (f *FanRedundancy) String() string {
-	switch *f {
-	case FanRedundancyOther:
-		return "Other"
-	case FanRedundancyNotRedundant:
-		return "Not Redundant"
-	case FanRedundancyRedundant:
-		return "Redundant"
-	default:
+	s, ok := fanRedundancyHumanMappings[*f]
+	if !ok {
 		return "Unknown"
 	}
+	return s
 }
