@@ -981,7 +981,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 			Generation: 7,
 			Expected: []TemperatureSensor{
 				{
-					ID: 1,
+					ID:                    1,
 					CurrentReadingCelsius: 26,
 					Locale:                TemperatureSensorLocaleAmbient,
 					Threshold:             41,
@@ -989,7 +989,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 2,
+					ID:                    2,
 					CurrentReadingCelsius: 40,
 					Locale:                TemperatureSensorLocaleCPU,
 					Threshold:             82,
@@ -997,7 +997,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 3,
+					ID:                    3,
 					CurrentReadingCelsius: 40,
 					Locale:                TemperatureSensorLocaleCPU,
 					Threshold:             82,
@@ -1005,7 +1005,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 4,
+					ID:                    4,
 					CurrentReadingCelsius: 41,
 					Locale:                TemperatureSensorLocaleMemory,
 					Threshold:             87,
@@ -1013,7 +1013,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 5,
+					ID:                    5,
 					CurrentReadingCelsius: 42,
 					Locale:                TemperatureSensorLocaleMemory,
 					Threshold:             87,
@@ -1021,7 +1021,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 6,
+					ID:                    6,
 					CurrentReadingCelsius: 42,
 					Locale:                TemperatureSensorLocaleMemory,
 					Threshold:             87,
@@ -1029,7 +1029,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 7,
+					ID:                    7,
 					CurrentReadingCelsius: 43,
 					Locale:                TemperatureSensorLocaleMemory,
 					Threshold:             87,
@@ -1037,7 +1037,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 8,
+					ID:                    8,
 					CurrentReadingCelsius: 51,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             90,
@@ -1045,7 +1045,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 9,
+					ID:                    9,
 					CurrentReadingCelsius: 45,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             65,
@@ -1053,7 +1053,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 10,
+					ID:                    10,
 					CurrentReadingCelsius: 50,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             90,
@@ -1061,7 +1061,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 11,
+					ID:                    11,
 					CurrentReadingCelsius: 43,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             70,
@@ -1069,7 +1069,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 12,
+					ID:                    12,
 					CurrentReadingCelsius: 57,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             90,
@@ -1077,7 +1077,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 19,
+					ID:                    19,
 					CurrentReadingCelsius: 32,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             70,
@@ -1085,7 +1085,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 20,
+					ID:                    20,
 					CurrentReadingCelsius: 36,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             70,
@@ -1093,7 +1093,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 21,
+					ID:                    21,
 					CurrentReadingCelsius: 40,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             80,
@@ -1101,7 +1101,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 22,
+					ID:                    22,
 					CurrentReadingCelsius: 39,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             80,
@@ -1109,7 +1109,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 23,
+					ID:                    23,
 					CurrentReadingCelsius: 48,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             77,
@@ -1117,7 +1117,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 24,
+					ID:                    24,
 					CurrentReadingCelsius: 44,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             70,
@@ -1125,7 +1125,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 25,
+					ID:                    25,
 					CurrentReadingCelsius: 41,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             70,
@@ -1133,7 +1133,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 26,
+					ID:                    26,
 					CurrentReadingCelsius: 42,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             70,
@@ -1141,7 +1141,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 29,
+					ID:                    29,
 					CurrentReadingCelsius: 40,
 					Locale:                TemperatureSensorLocaleStorage,
 					Threshold:             60,
@@ -1149,7 +1149,7 @@ func TestMIB_TemperatureSensors(t *testing.T) {
 					Status:                StatusOK,
 				},
 				{
-					ID: 30,
+					ID:                    30,
 					CurrentReadingCelsius: 74,
 					Locale:                TemperatureSensorLocaleSystem,
 					Threshold:             110,
