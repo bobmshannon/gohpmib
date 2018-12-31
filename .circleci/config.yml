@@ -1,0 +1,37 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+
+install-python: &install-python
+  run:
+    name: Installing Python
+    command: |
+      sudo apt-get update && sudo apt-get -y install python python-pip python-dev build-essential
+
+install-snmp-simulator: &install-snmp-simulator
+  run:
+    name: Installing SNMP agent simulator
+    command: |
+      sudo pip install snmpsim
+
+run-snmp-simulator: &run-snmp-simulator
+  run:
+    name: Running SNMP agent simulatior
+    command: snmpsimd.py --process-user=nobody --process-group=nogroup --data-dir=./testdata --agent-udpv4-endpoint=127.0.0.1:1024
+    background: true
+
+jobs:
+  build:
+    docker:
+      # specify the version
+      - image: circleci/golang:1.11.4
+    working_directory: /go/src/github.com/bobmshannon/gohpmib
+    steps:
+      - checkout
+      - *install-python
+      - *install-snmp-simulator
+      - *run-snmp-simulator
+      # specify any bash command here prefixed with `run: `
+      - run: go get -v -t -d ./...
+      - run: go test -tags integration -v ./...
