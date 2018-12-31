@@ -53,6 +53,47 @@ const (
 	cpqHeFltTolPowerSupplySerialNumber    OID = "1.3.6.1.4.1.232.6.2.9.3.1.11"
 )
 
+var (
+	powerSupplyStatusIDMappings = map[string]PowerSupplyStatus{
+		"1":  PowerSupplyStatusNoError,
+		"2":  PowerSupplyStatusGeneralFailure,
+		"3":  PowerSupplyStatusBISTFailure,
+		"4":  PowerSupplyStatusFanFailure,
+		"5":  PowerSupplyStatusTempFailure,
+		"6":  PowerSupplyStatusInterlockOpen,
+		"7":  PowerSupplyStatusEPROMFailed,
+		"8":  PowerSupplyStatusVREFFailed,
+		"9":  PowerSupplyStatusDACFailed,
+		"10": PowerSupplyStatusRAMTestFailed,
+		"11": PowerSupplyStatusVoltageChannelFailed,
+		"12": PowerSupplyStatusORRingDiodeFailed,
+		"13": PowerSupplyStatusBrownOut,
+		"14": PowerSupplyStatusGiveUpOnStartup,
+		"15": PowerSupplyStatusNVRAMInvalid,
+		"16": PowerSupplyStatusCalibrationTableInvalid,
+		"17": PowerSupplyStatusNoPowerInput,
+	}
+	powerSupplyStatusHumanMappings = map[PowerSupplyStatus]string{
+		PowerSupplyStatusNoError:                 "No Error",
+		PowerSupplyStatusGeneralFailure:          "General Failure",
+		PowerSupplyStatusBISTFailure:             "BIST Failure",
+		PowerSupplyStatusFanFailure:              "Fan Failure",
+		PowerSupplyStatusTempFailure:             "Temp Failure",
+		PowerSupplyStatusInterlockOpen:           "Interlock Open",
+		PowerSupplyStatusEPROMFailed:             "EEPROM Failed",
+		PowerSupplyStatusVREFFailed:              "VREF Failed",
+		PowerSupplyStatusDACFailed:               "DAC Failed",
+		PowerSupplyStatusRAMTestFailed:           "Ram Test Failed",
+		PowerSupplyStatusVoltageChannelFailed:    "Voltage Channel Failed",
+		PowerSupplyStatusORRingDiodeFailed:       "ORRing Diode Failed",
+		PowerSupplyStatusBrownOut:                "Brown Out",
+		PowerSupplyStatusGiveUpOnStartup:         "Give Up On Startup",
+		PowerSupplyStatusNVRAMInvalid:            "NVRAM Invalid",
+		PowerSupplyStatusCalibrationTableInvalid: "Calibration Table Invalid",
+		PowerSupplyStatusNoPowerInput:            "No Power Input",
+	}
+)
+
 // PowerSupplies returns a list of Power Supplies. Returns a non-nil error if the list of Power
 // Supplies could not be determined.
 func (m *MIB) PowerSupplies() ([]PowerSupply, error) {
@@ -111,84 +152,18 @@ func (m *MIB) PowerSupplies() ([]PowerSupply, error) {
 }
 
 func parsePowerSupplyStatus(s string) PowerSupplyStatus {
-	switch s {
-	case "1":
-		return PowerSupplyStatusNoError
-	case "2":
-		return PowerSupplyStatusGeneralFailure
-	case "3":
-		return PowerSupplyStatusBISTFailure
-	case "4":
-		return PowerSupplyStatusFanFailure
-	case "5":
-		return PowerSupplyStatusTempFailure
-	case "6":
-		return PowerSupplyStatusInterlockOpen
-	case "7":
-		return PowerSupplyStatusEPROMFailed
-	case "8":
-		return PowerSupplyStatusVREFFailed
-	case "9":
-		return PowerSupplyStatusDACFailed
-	case "10":
-		return PowerSupplyStatusRAMTestFailed
-	case "11":
-		return PowerSupplyStatusVoltageChannelFailed
-	case "12":
-		return PowerSupplyStatusORRingDiodeFailed
-	case "13":
-		return PowerSupplyStatusBrownOut
-	case "14":
-		return PowerSupplyStatusGiveUpOnStartup
-	case "15":
-		return PowerSupplyStatusNVRAMInvalid
-	case "16":
-		return PowerSupplyStatusCalibrationTableInvalid
-	case "17":
-		return PowerSupplyStatusNoPowerInput
-	default:
+	status, ok := powerSupplyStatusIDMappings[s]
+	if !ok {
 		return PowerSupplyStatusUnknown
 	}
+	return status
 }
 
 // String converts the PowerSupplyStatus to a human readable string.
 func (ps *PowerSupplyStatus) String() string {
-	switch *ps {
-	case PowerSupplyStatusNoError:
-		return "No Error"
-	case PowerSupplyStatusGeneralFailure:
-		return "General Failure"
-	case PowerSupplyStatusBISTFailure:
-		return "BIST Failure"
-	case PowerSupplyStatusFanFailure:
-		return "Fan Failure"
-	case PowerSupplyStatusTempFailure:
-		return "Temp Failure"
-	case PowerSupplyStatusInterlockOpen:
-		return "Interlock Open"
-	case PowerSupplyStatusEPROMFailed:
-		return "EPROM Failed"
-	case PowerSupplyStatusVREFFailed:
-		return "VREF Failed"
-	case PowerSupplyStatusDACFailed:
-		return "DAC Failed"
-	case PowerSupplyStatusRAMTestFailed:
-		return "RAM Test Failed"
-	case PowerSupplyStatusVoltageChannelFailed:
-		return "Voltage Channel Failed"
-	case PowerSupplyStatusORRingDiodeFailed:
-		return "ORRing Diode Failed"
-	case PowerSupplyStatusBrownOut:
-		return "Brown Out"
-	case PowerSupplyStatusGiveUpOnStartup:
-		return "Give Up On Startup"
-	case PowerSupplyStatusNVRAMInvalid:
-		return "NVRAM Invalid"
-	case PowerSupplyStatusCalibrationTableInvalid:
-		return "Calibration Table Invalid"
-	case PowerSupplyStatusNoPowerInput:
-		return "No Power Input"
-	default:
+	s, ok := powerSupplyStatusHumanMappings[*ps]
+	if !ok {
 		return "Unknown"
 	}
+	return s
 }
