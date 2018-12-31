@@ -57,6 +57,8 @@ const (
 	cpqHeTemperatureThresholdType = "1.3.6.1.4.1.232.6.2.6.8.1.7"
 )
 
+// TemperatureSensors returns a list of Temperature Sensors. Returns a non-nil error if the list of Temperature
+// Sensors could not be determined.
 func (m *MIB) TemperatureSensors() ([]TemperatureSensor, error) {
 	sensors := []TemperatureSensor{}
 
